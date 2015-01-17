@@ -58,4 +58,5 @@ public class Utils {
 
     public static final Executor DUAL_THREAD_EXECUTOR =
             Executors.newFixedThreadPool(2, sThreadFactory);
+
 }
