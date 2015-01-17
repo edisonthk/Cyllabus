@@ -20,6 +20,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Utils {
     private Utils() {};
 
+    public static String PREF_ACCOUNT = "pref_account";
+    public static String PREF_KEY_USERNAME = "username";
+
+
 
     public static boolean hasFroyo() {
         // Can use static final constants like FROYO, declared in later versions
