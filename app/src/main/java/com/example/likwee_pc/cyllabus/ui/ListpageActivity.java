@@ -1,27 +1,21 @@
 package com.example.likwee_pc.cyllabus.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
-import com.example.likwee_pc.cyllabus.R;
-import com.example.likwee_pc.cyllabus.util.HttpRequest;
-import com.example.likwee_pc.cyllabus.util.Utils;
 
-import java.io.IOException;
+import com.example.likwee_pc.cyllabus.R;
+import com.example.likwee_pc.cyllabus.util.ImageCache;
+import com.example.likwee_pc.cyllabus.util.ImageFetcher;
+import com.example.likwee_pc.cyllabus.util.Utils;
 
 
 public class ListpageActivity extends ActionBarActivity
@@ -39,6 +33,10 @@ public class ListpageActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+
+    private static ImageFetcher mImageFetcher;
+    private static final String IMAGE_CACHE_DIR = "thumbs";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +51,23 @@ public class ListpageActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        new FetchCourse().execute();
+
+        int mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
+
+        ImageCache.ImageCacheParams cacheParams =
+                new ImageCache.ImageCacheParams(this, IMAGE_CACHE_DIR);
+        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+        mImageFetcher = new ImageFetcher(this, mImageThumbSize);
+        mImageFetcher.addImageCache(getFragmentManager(), cacheParams);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -81,7 +87,6 @@ public class ListpageActivity extends ActionBarActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -118,6 +123,26 @@ public class ListpageActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mImageFetcher.setExitTasksEarly(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.setPauseWork(false);
+        mImageFetcher.setExitTasksEarly(true);
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
+    }
+
     public void signout(){
         SharedPreferences userDetails =getSharedPreferences(Utils.PREF_ACCOUNT, MODE_PRIVATE);
         SharedPreferences.Editor edit = userDetails.edit();
@@ -137,15 +162,22 @@ public class ListpageActivity extends ActionBarActivity
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+        protected static final String ARG_SECTION_NUMBER = "section_number";
+        protected static final String ARG_COURSE = "course";
 
-
+        private int mSectionNumber;
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+            PlaceholderFragment fragment = null;
+            if(sectionNumber == 2){
+                fragment = new WebDesignFragment();
+            }else{
+                fragment = new CourseListFragment();
+            }
+
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -155,34 +187,9 @@ public class ListpageActivity extends ActionBarActivity
         public PlaceholderFragment() {
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_listpage, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((ListpageActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-
-            Log.i(TAG, "Attach "+getArguments().getInt(ARG_SECTION_NUMBER));
+        public ImageFetcher getImageFetcher() {
+            return mImageFetcher;
         }
     }
 
-    private class FetchCourse extends AsyncTask<Void,Void,Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-//            try {
-//                String rst = new HttpRequest("GET","http://example.com").send();
-//                Log.i(TAG, rst);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            return null;
-        }
-    }
 }

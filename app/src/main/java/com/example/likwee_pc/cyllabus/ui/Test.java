@@ -3,6 +3,7 @@ package com.example.likwee_pc.cyllabus.ui;
 import com.example.likwee_pc.cyllabus.schema.Course;
 import com.example.likwee_pc.cyllabus.schema.User;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,11 +14,11 @@ public class Test {
 
 
 
-    public User a = new User("さいわき",null);
-    public User b = new User("おおはたけん",null);
-    public User c = new User("@in_north",null);
+    public static User a = new User("さいわき",null);
+    public static User b = new User("おおはたけん",null);
+    public static User c = new User("@in_north",null);
 
-    public List<Course> lists = Arrays.asList(
+    public static List<Course> lists = Arrays.asList(
             new Course("データとは? - ER図の書き方","2014-09-17",a,"https://cyllabus-production.s3.amazonaws.com/uploads/course/background_image/102/a890bd89-c652-4eae-aa22-7ce5d0f41a20.jpg"),
             new Course("C言語基礎テスト","2015-01-17",b,"https://cyllabus-production.s3.amazonaws.com/uploads/course/background_image/1853/9939c6c3-4fe6-4fc2-bcb7-c06fa9fa93f0.jpg"),
             new Course("PCCS明度&彩度スケール","2014-10-30",a,"https://cyllabus-production.s3.amazonaws.com/uploads/course/background_image/81/9b5c3a9e-c4bd-4456-95a4-de8ee249f98f.jpg"),

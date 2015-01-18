@@ -70,6 +70,16 @@ public class LoginActivity extends Activity implements LoaderManager.LoaderCallb
     private boolean mLoginedFlag;
 
     @Override
+    protected void onStart() {
+        if(mLoginedFlag) {
+            Intent myIntent = new Intent(this, ListpageActivity.class);
+            startActivity(myIntent);
+        }
+
+        super.onStart();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -79,12 +89,6 @@ public class LoginActivity extends Activity implements LoaderManager.LoaderCallb
 
         String username= userDetails.getString(Utils.PREF_KEY_USERNAME, null);
         this.mLoginedFlag = (username != null);
-
-        if(mLoginedFlag) {
-            Intent myIntent = new Intent(this, ListpageActivity.class);
-            startActivity(myIntent);
-        }
-
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);

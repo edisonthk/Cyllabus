@@ -5,15 +5,15 @@
 
     <ImageView
         android:id="@+id/courses_item_image"
-        android:layout_centerVertical="true"
-        android:layout_width="300px"
-        android:layout_height="300px" />
+        android:layout_centerHorizontal="true"
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
 
     <TextView
         android:id="@+id/courses_item_title"
         android:layout_width="wrap_content"
         android:layout_below="@+id/courses_item_image"
-        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content" />
 
 </RelativeLayout>

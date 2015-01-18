@@ -25,7 +25,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.likwee_pc.cyllabus.R;
-import com.example.likwee_pc.cyllabus.util.CourseAdapter;
 import com.example.likwee_pc.cyllabus.util.ImageCache;
 import com.example.likwee_pc.cyllabus.util.ImageFetcher;
 
@@ -65,11 +64,6 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    private int mImageThumbSize;
-    private int mImageThumbSpacing;
-    private CourseAdapter mAdapter;
-    private ImageFetcher mImageFetcher;
-
 
     private static final String TAG = "ImageGridFragment";
     private static final String IMAGE_CACHE_DIR = "thumbs";
@@ -94,18 +88,18 @@ public class NavigationDrawerFragment extends Fragment {
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
 
-        mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
-        mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
-
-        ImageCache.ImageCacheParams cacheParams =
-                new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
-
-        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
-
-        // The ImageFetcher takes care of loading images into our ImageView children asynchronously
-        mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
-//        mImageFetcher.setLoadingImage(R.drawable.empty_photo);
-        mImageFetcher.addImageCache(getActivity().getFragmentManager(), cacheParams);
+//        mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
+//        mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
+//
+//        ImageCache.ImageCacheParams cacheParams =
+//                new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+//
+//        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+//
+//        // The ImageFetcher takes care of loading images into our ImageView children asynchronously
+//        mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
+////        mImageFetcher.setLoadingImage(R.drawable.empty_photo);
+//        mImageFetcher.addImageCache(getActivity().getFragmentManager(), cacheParams);
 
 
     }
