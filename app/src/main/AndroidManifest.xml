@@ -20,8 +20,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ui.ListpageActivity"
-            android:label="@string/app_name" >
+            android:name=".ui.LoginActivity"
+            android:label="@string/title_activity_login"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,8 +30,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:name=".ui.ListpageActivity"
+            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
 
