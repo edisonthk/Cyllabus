@@ -65,12 +65,15 @@ public class LoginActivity extends Activity implements LoaderManager.LoaderCallb
     private View mEmailLoginFormView;
     private View mLoginFormView;
 
+    private Activity mActivity;
+
     // もしログインが成功したら、TRUEを返します。
     // まだログインしていない、もしくは失敗した人はFALSE
     private boolean mLoginedFlag;
 
     @Override
     protected void onStart() {
+        Log.i(TAG,"onStart");
         if(mLoginedFlag) {
             Intent myIntent = new Intent(this, ListpageActivity.class);
             startActivity(myIntent);
@@ -105,6 +108,8 @@ public class LoginActivity extends Activity implements LoaderManager.LoaderCallb
                 return false;
             }
         });
+
+        mActivity = this;
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -350,10 +355,13 @@ public class LoginActivity extends Activity implements LoaderManager.LoaderCallb
             mAuthTask = null;
             showProgress(false);
 
+            mLoginedFlag = true;
+
             Log.i(TAG,"Login response RESULT:"+success );
 
             if (success) {
-                finish();
+                Intent i = new Intent(mActivity, ListpageActivity.class);
+                startActivity(i);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

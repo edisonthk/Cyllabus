@@ -7,14 +7,13 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
 
 import com.example.likwee_pc.cyllabus.R;
-import com.example.likwee_pc.cyllabus.util.ImageCache;
-import com.example.likwee_pc.cyllabus.util.ImageFetcher;
 import com.example.likwee_pc.cyllabus.util.Utils;
 
 
@@ -33,9 +32,13 @@ public class ListpageActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    public interface ActivityFragmentEvent {
+        public void backstackEvent();
+    }
 
-    private static ImageFetcher mImageFetcher;
+
     private static final String IMAGE_CACHE_DIR = "thumbs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +54,8 @@ public class ListpageActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-
         int mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
 
-        ImageCache.ImageCacheParams cacheParams =
-                new ImageCache.ImageCacheParams(this, IMAGE_CACHE_DIR);
-        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
-        mImageFetcher = new ImageFetcher(this, mImageThumbSize);
-        mImageFetcher.addImageCache(getFragmentManager(), cacheParams);
     }
 
     @Override
@@ -124,23 +121,17 @@ public class ListpageActivity extends ActionBarActivity
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mImageFetcher.setExitTasksEarly(false);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mImageFetcher.setPauseWork(false);
-        mImageFetcher.setExitTasksEarly(true);
-        mImageFetcher.flushCache();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mImageFetcher.closeCache();
+    public void onBackPressed() {
+        Fragment f = getFragmentManager().findFragmentById(R.id.container);
+        if (f instanceof CourseFragment){
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, new CourseListFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     public void signout(){
@@ -154,6 +145,8 @@ public class ListpageActivity extends ActionBarActivity
         startActivity(i);
     }
 
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -164,6 +157,7 @@ public class ListpageActivity extends ActionBarActivity
          */
         protected static final String ARG_SECTION_NUMBER = "section_number";
         protected static final String ARG_COURSE = "course";
+
 
         private int mSectionNumber;
         /**
@@ -185,10 +179,6 @@ public class ListpageActivity extends ActionBarActivity
         }
 
         public PlaceholderFragment() {
-        }
-
-        public ImageFetcher getImageFetcher() {
-            return mImageFetcher;
         }
     }
 

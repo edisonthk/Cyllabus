@@ -25,9 +25,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.likwee_pc.cyllabus.R;
-import com.example.likwee_pc.cyllabus.util.ImageCache;
-import com.example.likwee_pc.cyllabus.util.ImageFetcher;
-
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">

@@ -16,8 +16,7 @@ import android.widget.TextView;
 
 import com.example.likwee_pc.cyllabus.R;
 import com.example.likwee_pc.cyllabus.schema.Course;
-import com.example.likwee_pc.cyllabus.util.ImageCache;
-import com.example.likwee_pc.cyllabus.util.ImageFetcher;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -57,10 +56,10 @@ public class CourseListFragment extends ListpageActivity.PlaceholderFragment imp
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((ListpageActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
-
-        Log.i(TAG, "Attach " + getArguments().getInt(ARG_SECTION_NUMBER));
+//        ((ListpageActivity) activity).onSectionAttached(
+//                getArguments().getInt(ARG_SECTION_NUMBER));
+//
+//        Log.i(TAG, "Attach " + getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
 
@@ -157,8 +156,7 @@ public class CourseListFragment extends ListpageActivity.PlaceholderFragment imp
 
             Course c = getItem(position);
             titleView.setText(c.title);
-            getImageFetcher().setImageSize(630,420);
-            getImageFetcher().loadImage(c.bitmapUrl, thumbView);
+            Picasso.with(getActivity()).load(c.bitmapUrl).into(thumbView);
 
 
             return convertView;

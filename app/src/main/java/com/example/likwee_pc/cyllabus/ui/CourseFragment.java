@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.likwee_pc.cyllabus.R;
 import com.example.likwee_pc.cyllabus.schema.Course;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by LikWee-PC on 2015/01/18.
@@ -46,11 +48,25 @@ public class CourseFragment extends ListpageActivity.PlaceholderFragment {
         View view = inflater.inflate(R.layout.fragment_course, container, false);
 
         ImageView img = (ImageView)view.findViewById(R.id.fragment_course_parallaximage);
-        getImageFetcher().loadImage("https://cyllabus-production.s3.amazonaws.com/uploads/course/background_image/1740/cc9cfe94-2826-47e6-afa8-cb093787be3d.jpg", img);
+        String url = "https://cyllabus-production.s3.amazonaws.com/uploads/course/background_image/1740/cc9cfe94-2826-47e6-afa8-cb093787be3d.jpg";
+        Picasso.with(getActivity()).load(url).into(img);
 
 
         TextView titleView = (TextView)view.findViewById(R.id.fragment_course_title);
         titleView.setText(mCourse.title);
+
+        view.setFocusableInTouchMode(true);
+        view.setOnKeyListener( new View.OnKeyListener(){
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event ){
+                if( keyCode == KeyEvent.KEYCODE_BACK ){
+
+
+                }
+                Log.i(TAG,"fggghfghf");
+                return false;
+            }
+        } );
 
         return view;
     }
