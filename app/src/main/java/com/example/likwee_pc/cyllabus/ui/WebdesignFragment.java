@@ -13,15 +13,15 @@ import com.example.likwee_pc.cyllabus.util.Utils;
 /**
  * Created by LikWee-PC on 2015/01/18.
  */
-public class WebdesignFragment extends ListpageActivity.PlaceholderFragment {
+public class WebDesignFragment extends ListpageActivity.PlaceholderFragment {
 
-    private static final String TAG = WebdesignFragment.class.getName();
+    private static final String TAG = WebDesignFragment.class.getName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_listpage, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_course, container, false);
         return rootView;
     }
 
@@ -29,8 +29,8 @@ public class WebdesignFragment extends ListpageActivity.PlaceholderFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((ListpageActivity) activity).onSectionAttached(
-                getArguments().getInt(Utils.ARG_SECTION_NUMBER));
+                getArguments().getInt(ARG_SECTION_NUMBER));
 
-        Log.i(TAG, "Attach " + getArguments().getInt(Utils.ARG_SECTION_NUMBER));
+        Log.i(TAG, "Attach " + getArguments().getInt(ARG_SECTION_NUMBER));
     }
 }
