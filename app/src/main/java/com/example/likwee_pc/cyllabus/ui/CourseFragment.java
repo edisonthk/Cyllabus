@@ -39,8 +39,9 @@ public class CourseFragment extends ListpageActivity.PlaceholderFragment {
             fm.beginTransaction()
                     .replace(R.id.container, new CourseListFragment())
                     .commit();
-
         }
+
+        ((ListpageActivity)activity).setActionBarTitle("コース単体");
 
         mCourse = (Course)getArguments().getSerializable(ARG_COURSE);
         Log.i(TAG, "Course title: "+mCourse.title);

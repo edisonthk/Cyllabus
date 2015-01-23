@@ -73,7 +73,6 @@ public class LoginActivity extends Activity implements LoaderManager.LoaderCallb
 
     @Override
     protected void onStart() {
-        Log.i(TAG,"onStart");
         if(mLoginedFlag) {
             Intent myIntent = new Intent(this, ListpageActivity.class);
             startActivity(myIntent);

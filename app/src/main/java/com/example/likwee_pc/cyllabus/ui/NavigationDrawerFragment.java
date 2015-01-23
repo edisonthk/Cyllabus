@@ -1,6 +1,10 @@
 package com.example.likwee_pc.cyllabus.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -21,10 +25,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.likwee_pc.cyllabus.R;
+
+import java.util.ArrayList;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -65,7 +74,28 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String TAG = "ImageGridFragment";
     private static final String IMAGE_CACHE_DIR = "thumbs";
 
+    private static final int MENUITEM_TYPE_PROFILE = 0;
+    private static final int MENUITEM_TYPE_TITLE = 1;
+    private static final int MENUITEM_TYPE_ITEM = 2;
+
+    private ArrayList<DrawerItem> mList;
+
     public NavigationDrawerFragment() {
+        mList = new ArrayList<DrawerItem>();
+        mList.add(new DrawerItem("@edisonthk",MENUITEM_TYPE_PROFILE));
+        mList.add(new DrawerItem("公開コース一覧",MENUITEM_TYPE_ITEM, R.drawable.market));
+        mList.add(new DrawerItem("タイムライン",MENUITEM_TYPE_ITEM, R.drawable.time));
+
+        mList.add(new DrawerItem("活動履歴",MENUITEM_TYPE_TITLE));
+        mList.add(new DrawerItem("閲覧したコース",MENUITEM_TYPE_ITEM, R.drawable.eye));
+        mList.add(new DrawerItem("後でやるコース",MENUITEM_TYPE_ITEM, R.drawable.favorite));
+        mList.add(new DrawerItem("参加中のコース",MENUITEM_TYPE_ITEM, R.drawable.joining));
+        mList.add(new DrawerItem("完了したコース",MENUITEM_TYPE_ITEM, R.drawable.completion));
+        mList.add(new DrawerItem("アクセスログ",MENUITEM_TYPE_ITEM, R.drawable.log));
+
+        mList.add(new DrawerItem("関連コース",MENUITEM_TYPE_TITLE));
+        mList.add(new DrawerItem("コース作成",MENUITEM_TYPE_ITEM, R.drawable.ic_new));
+
     }
 
     @Override
@@ -119,15 +149,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
+        mDrawerListView.setAdapter(new NavigationDrawerAdapter());
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -227,6 +249,10 @@ public class NavigationDrawerFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
+            for (DrawerItem item : mList) {
+                item.loadImage(activity);
+            }
+
             mCallbacks = (NavigationDrawerCallbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
@@ -301,5 +327,114 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    private static final class DrawerItem {
+        String name;
+        int drawable_id;
+        Drawable icon;
+        int type;
+
+        public DrawerItem (String name, int type){
+            this(name, type, 0);
+        }
+        public DrawerItem (String name,int type,int drawable_id){
+            this.name = name;
+            this.type = type;
+            this.drawable_id = drawable_id;
+        }
+
+        public void loadImage(Activity activity){
+            if(drawable_id > 0 || type == MENUITEM_TYPE_PROFILE){
+                if(type == MENUITEM_TYPE_ITEM){
+                    icon = scaleDrawable(activity.getResources().getDrawable(drawable_id) , 20, 20);
+                }else if(type == MENUITEM_TYPE_PROFILE){
+                    icon = scaleDrawable(activity.getResources().getDrawable(R.drawable.ic_user) , 35, 35);
+                }
+
+            }
+        }
+
+    // resize image
+    private Drawable scaleDrawable(Drawable drawable, int width, int
+            height)
+    {
+        int wi = drawable.getIntrinsicWidth();
+        int hi = drawable.getIntrinsicHeight();
+        int dimDiff = Math.abs(wi - width) - Math.abs(hi - height);
+        float scale = (dimDiff > 0) ? width/(float)wi : height/
+                (float)hi;
+        Rect bounds = new Rect(0, 0, (int)(scale*wi), (int)(scale*hi));
+        drawable.setBounds(bounds);
+        return drawable;
+    }
+    }
+
+    private static class ViewHolder {
+        public final TextView textView;
+
+        public ViewHolder(TextView textView){
+            this.textView = textView;
+        }
+    }
+
+    public class NavigationDrawerAdapter extends BaseAdapter {
+
+        @Override
+        public int getViewTypeCount() {
+            return 3;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return mList.get(position).type;
+        }
+
+        @Override
+        public int getCount() {
+            return mList.size();
+        }
+
+        @Override
+        public DrawerItem getItem(int position) {
+            return mList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            int type = getItemViewType(position);
+            TextView textView = null;
+            if(convertView == null){
+                if(type == MENUITEM_TYPE_PROFILE){
+                    convertView = LayoutInflater.from(getActivity()).inflate(R.layout.navigation_drawer_item_profile, parent,false);
+                }else if(type == MENUITEM_TYPE_TITLE){
+                    convertView = LayoutInflater.from(getActivity()).inflate(R.layout.navigation_drawer_item_title, parent,false);
+                }else if(type == MENUITEM_TYPE_ITEM){
+                    convertView = LayoutInflater.from(getActivity()).inflate(R.layout.navigation_drawer_item, parent,false);
+                }
+
+                textView = (TextView)convertView;
+                convertView.setTag(new ViewHolder(textView ));
+
+            }else{
+                ViewHolder holder = (ViewHolder)convertView.getTag();
+                textView = holder.textView;
+            }
+
+            DrawerItem item = getItem(position);
+
+            if(type == MENUITEM_TYPE_ITEM || type == MENUITEM_TYPE_PROFILE){
+                textView.setCompoundDrawables(item.icon, null, null, null);
+            }
+            textView.setText(item.name);
+
+
+            return convertView;
+        }
     }
 }

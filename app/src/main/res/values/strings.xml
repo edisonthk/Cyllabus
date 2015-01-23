@@ -2,14 +2,28 @@
 <resources>
 
     <string name="app_name">Cyllabus</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
     <string name="no_network_connection_toast">ネットワークにつながりません</string>
+
+    <!--　NavigationDrawer メニュー　-->
+
+    <string-array name="section1">
+        <item>公開コースー一覧</item>
+        <item>タイムライン</item>
+    </string-array>
+
+    <string name="section2_title">活動履歴</string>
+    <string-array name="section2">
+        <item>閲覧したコース</item>
+        <item>あとでやるコース</item>
+        <item>参加中のコース</item>
+        <item>完了したコース</item>
+        <item>アクセルログ</item>
+    </string-array>
 
 </resources>
