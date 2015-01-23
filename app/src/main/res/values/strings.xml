@@ -10,6 +10,8 @@
 
     <string name="no_network_connection_toast">ネットワークにつながりません</string>
 
+    <string name="no_organization">所属組織なし</string>
+
     <!--　NavigationDrawer メニュー　-->
 
     <string-array name="section1">

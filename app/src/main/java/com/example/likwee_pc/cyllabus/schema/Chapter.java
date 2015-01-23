@@ -1,11 +1,14 @@
 package com.example.likwee_pc.cyllabus.schema;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.likwee_pc.cyllabus.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -86,22 +89,44 @@ public class Chapter implements Serializable {
 
             TextView v;
             ImageView img;
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             switch (node.type){
                 case text:
 
                     v =new TextView(activity);
                     v.setText(node.content);
+                    v.setTextSize(20);
+                    v.setLayoutParams(layoutParams);
                     wbs.add(v);
                     break;
                 case h3:
 
                     v =new TextView(activity);
                     v.setText(node.content);
+                    v.setTextSize(25);
+                    v.setTextColor(Color.parseColor("#46a6c3"));
+
+                    layoutParams.setMargins(0,10,0,10);
+                    v.setLayoutParams(layoutParams);
+
+                    v.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.headline3_background));
+                    v.setBackground(activity.getResources().getDrawable(R.drawable.headline3_background));
+
+                    v.setPadding(10,0,0,0);
+
                     wbs.add(v);
                     break;
                 case h4:
                     v =new TextView(activity);
                     v.setText(node.content);
+                    v.setTextSize(20);
+
+                    layoutParams.setMargins(0,10,0,10);
+                    v.setLayoutParams(layoutParams);
+
+                    v.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.headline4_background));
+                    v.setBackground(activity.getResources().getDrawable(R.drawable.headline4_background));
+
                     wbs.add(v);
                     break;
                 case image:

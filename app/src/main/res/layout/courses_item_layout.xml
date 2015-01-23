@@ -9,11 +9,37 @@
         android:layout_width="300dp"
         android:layout_height="300dp" />
 
+
     <TextView
         android:id="@+id/courses_item_title"
+        android:textSize="25dp"
         android:layout_width="wrap_content"
         android:layout_below="@+id/courses_item_image"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/courses_item_group_publisher_layout"
+        android:orientation="horizontal"
+        android:layout_below="@+id/courses_item_title"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/courses_item_organization"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/courses_item_user"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </RelativeLayout>

@@ -64,6 +64,10 @@ public class CourseFragment extends ListpageActivity.PlaceholderFragment {
 
 
         Chapter dummyChpater = Test.getTestChapter();
+        // テキストをビューにパーサする関数
+        // たとえば、いまのテキストはheadlineとなった場合は、青色で太い文字になるようなビューを用意します
+        //
+        // この関数はChapterクラスの関数なので、schema/Chapaterクラスを参照してください。
         ArrayList<View> wvs = dummyChpater.parseToWebView(getActivity());
 
         for (View v : wvs){

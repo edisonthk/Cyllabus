@@ -56,8 +56,9 @@ public class ListpageActivity extends ActionBarActivity
 
         int mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
 
-
     }
+
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -76,10 +77,18 @@ public class ListpageActivity extends ActionBarActivity
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        Log.i(TAG,""+mTitle);
+
         actionBar.setTitle(mTitle);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, PlaceholderFragment.newInstance(2))
+                .commit();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -158,7 +167,8 @@ public class ListpageActivity extends ActionBarActivity
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = null;
-            if(sectionNumber == 2){
+            Log.i(TAG,"Section selected: "+sectionNumber);
+            if(sectionNumber == 1){
                 fragment = new WebDesignFragment();
             }else{
                 fragment = new CourseListFragment();

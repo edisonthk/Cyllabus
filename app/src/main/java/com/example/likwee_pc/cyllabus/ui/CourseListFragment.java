@@ -68,7 +68,6 @@ public class CourseListFragment extends ListpageActivity.PlaceholderFragment imp
 
         Course c = mCoursesList.get(position);
 
-        Log.i(TAG,"fsdfsdfsd");
         CourseFragment frag = new CourseFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_COURSE, c);
@@ -122,19 +121,21 @@ public class CourseListFragment extends ListpageActivity.PlaceholderFragment imp
 
         private class ViewHolder {
             public final ImageView thumbView;
-            public final TextView titleView;
+            public final TextView titleView, userView,organizationView;
 
-            public ViewHolder(ImageView thumbView, TextView titleView) {
+            public ViewHolder(ImageView thumbView, TextView titleView,TextView userView, TextView organizationView) {
                 this.thumbView = thumbView;
                 this.titleView = titleView;
+                this.userView = userView;
+                this.organizationView = organizationView;
             }
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            ImageView thumbView ;
-            TextView titleView;
+            ImageView thumbView;
+            TextView titleView,userView,organizationView ;
 		/*
 		 * If convertView is not null, tried reuse it
 		 * else create LayoutInflater to pack up the row view
@@ -143,20 +144,32 @@ public class CourseListFragment extends ListpageActivity.PlaceholderFragment imp
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.courses_item_layout, parent, false);
                 thumbView = (ImageView) convertView.findViewById(R.id.courses_item_image);
                 titleView = (TextView) convertView.findViewById(R.id.courses_item_title);
-
-                convertView.setTag(new ViewHolder(thumbView, titleView));
+                userView = (TextView) convertView.findViewById(R.id.courses_item_user);
+                organizationView = (TextView) convertView.findViewById(R.id.courses_item_organization);
+                convertView.setTag(new ViewHolder(thumbView, titleView, userView, organizationView));
 
             } else {
                 ViewHolder holder = (ViewHolder) convertView.getTag();
                 thumbView = holder.thumbView;
                 titleView = holder.titleView;
-
+                userView = holder.userView;
+                organizationView = holder.organizationView;
             }
 
 
             Course c = getItem(position);
             titleView.setText(c.title);
             Picasso.with(getActivity()).load(c.bitmapUrl).into(thumbView);
+
+
+            userView.setText(c.publisher.name);
+            if(c.publisher.belongsTo == null || c.publisher.belongsTo.isEmpty()){
+                // res/values/strings.xmlの中で定義しています。
+                organizationView.setText(R.string.no_organization);
+            }else{
+                organizationView.setText(c.publisher.belongsTo);
+            }
+
 
 
             return convertView;
