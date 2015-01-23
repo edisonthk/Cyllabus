@@ -121,7 +121,7 @@ public class Chapter implements Serializable {
                     v.setText(node.content);
                     v.setTextSize(20);
 
-                    layoutParams.setMargins(0,10,0,10);
+                    layoutParams.setMargins(5,10,5,10);
                     v.setLayoutParams(layoutParams);
 
                     v.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.headline4_background));
